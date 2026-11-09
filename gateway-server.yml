@@ -7,12 +7,22 @@ eureka:
   client:
     registerWithEureka: true
     fetchRegistry: true
+    registryFetchIntervalSeconds: 5
     serviceUrl:
       defaultZone: http://eurekaserver:8070/eureka/
+
+ribbon:
+  ServerListRefreshInterval: 5000
       
 spring:
   cloud:
     gateway:
+      httpclient:
+        connect-timeout: 1000
+      default-filters:
+        - name: Retry
+          args:
+            retries: 3
       routes:
         - id: product-service
           uri: lb://product-service
